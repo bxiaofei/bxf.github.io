@@ -2,3 +2,5 @@
 
 public
 .deploy_git
+dist
+node_modules
