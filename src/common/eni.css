@@ -1,14 +1,16 @@
+/* general */
+
 .eni-flex {
 	display: flex;
 	flex-direction: row;
 }
 
-.eni-flex-item {
-	flex: 1;
+.eni-block {
+	display: block;
 }
 
-.eni-row {
-	flex-direction: row;
+.eni-flex-column {
+	flex-direction: column;
 }
 
 .eni-s-between {
@@ -21,17 +23,17 @@
   justify-content: center;
 }
 
-.eni-column {
-	flex-direction: column;
-}
-
-.eni-link {
-	color: #576B95;
-	font-size: 26px;
+.eni-flex-item { 
+	flex: 1;
 }
 
 .eni-text-center {
 	text-align: center;
+}
+
+.eni-stretch {
+	flex: 1 1 auto;
+	align-items: stretch;
 }
 
 .eni-inline-item {
@@ -50,6 +52,10 @@
 }
 
 /* % */
+.eni-w3 {
+  width: 3%;
+}
+
 .eni-w5 {
   width: 5%;
 }
@@ -74,11 +80,6 @@
   width: 45%;
 }
 
-.eni-stretch {
-	flex: 1 1 auto;
-	align-items: stretch;
-}
-
 /* page */
 .common-page-head {
   display: flex;
@@ -95,6 +96,7 @@
 
 .eni-padding-wrap {
 	padding: 10px;
+	word-break: break-all;
 }
 
 .eni-white {
@@ -1355,4 +1357,9 @@ checkbox-group label {
 	top: 50%;
 	left: 0;
 	transform: translateY(50%);
+}
+
+/* special */
+.add-box .eni-textarea{
+		width: 100%;
 }

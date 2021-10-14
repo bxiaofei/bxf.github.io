@@ -45,7 +45,7 @@ export default {
     },
     inputHeight: {
       type: String,
-      default: "6vh"
+      default: "60px"
     },
     placeHolder: {
       type: String,
