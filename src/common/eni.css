@@ -249,6 +249,7 @@
 	border: 1px solid #ced4da;
 	display: flex; 
 	align-items: center;
+	border-radius: 0.25rem;
 }
 
 .eni-textarea {
@@ -258,6 +259,7 @@
 	resize: vertical;
 	background-color: #fff;
 	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
 }
 
 .eni-normal-count {

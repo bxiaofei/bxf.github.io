@@ -1,8 +1,7 @@
 <template>
   <div class="main">
     <div class="common-page-head">
-      <!-- <p class="common-page-head-title">阿里国际站产品标题助手v1.0</p> -->
-      <p class="common-page-head-title">标题</p>
+      <p class="common-page-head-title">阿里国际站产品标题助手v1.0</p>
     </div>
     <div class="row">
       <div class="left">
@@ -131,7 +130,7 @@ export default {
     margin-top: 40px;
   }
   .keyword-container {
-    padding-left: 15px;
+    padding-left: 40px;
     flex: 1 1 50%;
     margin-bottom: 20px;
   }
@@ -139,6 +138,9 @@ export default {
   @media (max-width: 980px) {
     .row {
       display: block;
+    }
+    .keyword-container {
+      padding-left: 0px;
     }
   }
 }

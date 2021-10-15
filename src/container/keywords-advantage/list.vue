@@ -4,17 +4,34 @@
       <EmptyPrompt />
     </div>
     <div v-else>
-      <div class="eni-flex">
+      <div class="eni-s-between">
         <el-button size="small" type="primary" plain @click="handleSort">按字母排序</el-button>
+        <el-popover
+          popper-class="eni-pop-box"
+          width="100"
+          placement="left-start"
+          trigger="hover"
+          visible-arrow="true"
+          content="删除列表中所有关键词"
+        >
+          <el-button
+            size="small"
+            type="primary"
+            style="color: red;background-color: white;border-color: red;padding: 8px 10px;"
+            icon="el-icon-delete"
+            slot="reference"
+            @click="handleDeleteAll()"
+          ></el-button>
+        </el-popover>
       </div>
-      <div class="eni-flex" style="margin-top: 10px; padding: 0rem 1.25rem;">
-        <p class="menu-title" style="padding-left: 5vw; width:38%">关键词</p>
-        <p class="menu-title eni-flex-item">搜索量</p>
-        <p class="menu-title eni-flex-item">点击率</p>
-        <p class="menu-title eni-flex-item">出现次数</p>
-        <p class="menu-title eni-flex-item">使用次数</p>
+      <div class="eni-flex" style="margin-top: 10px; padding: 6px 1.25rem;">
+        <p class="menu-title" style="padding-left: 2vw; width:38%">关键词</p>
+        <p class="menu-title eni-flex-item eni-text-center">搜索量</p>
+        <p class="menu-title eni-flex-item eni-text-center">点击率</p>
+        <p class="menu-title eni-flex-item eni-text-center">出现次数</p>
+        <p class="menu-title eni-flex-item eni-text-center">使用次数</p>
         <p class="menu-title eni-w20 eni-text-center">出现位置</p>
-        <p class="menu-title eni-w5">操作</p>
+        <p class="menu-title eni-w5 eni-text-center">操作</p>
       </div>
       <draggable
         class="draggable"
@@ -25,7 +42,11 @@
       >
         <div :key="index" class="cell-container" v-for="(e,index) in array">
           <span class="fa fa-align-justify eni-w3 handle" />
-          <p class="eni-padding-wrap eni-white eni-w35">{{e.name}}</p>
+          <p
+            class="eni-padding-wrap eni-white eni-w35"
+            :class="{'menu-title-success':e.isTitleHas || e.isFeatureHas || e.isDescHas}"
+            slot="reference"
+          >{{e.name}}</p>
           <p class="eni-padding-wrap eni-white eni-flex-item eni-text-center">{{e.search}}</p>
           <p class="eni-padding-wrap eni-white eni-flex-item eni-text-center">{{e.click}}</p>
           <p class="eni-padding-wrap eni-white eni-flex-item eni-text-center">{{e.appear}}</p>
@@ -35,11 +56,19 @@
             <p class="badge-txt badge-light" :class="{'badge-success':e.isFeatureHas}">词</p>
             <p class="badge-txt badge-light" :class="{'badge-success':e.isDescHas}">描</p>
           </div>
-          <span
-            class="fa fa-trash-o eni-w5"
-            style="color: red;display: flex;justify-content: center;"
-            @click="handleDelete(index)"
-          />
+          <div class="eni-flex eni-w5">
+            <span
+              class="fa fa-clone"
+              style="color: white; display: flex; justify-content: center; cursor: pointer;"
+              v-clipboard:copy="e.name"
+              @click="handleCopyName(e.name)"
+            />
+            <span
+              class="fa fa-trash-o"
+              style="margin-left: 10px; color: #F56C6C;display: flex;justify-content: center; cursor: pointer;"
+              @click="handleDelete(index)"
+            />
+          </div>
         </div>
       </draggable>
     </div>
@@ -56,15 +85,22 @@
         <textarea class="eni-block eni-textarea" placeholder="将要添加到列表中的关键词填写到这里" v-model="dataTxt" />
       </div>
       <p class="or">或者</p>
-      <el-button class="eni-flex-item add-item-btn" type="primary" icon="el-icon-plus" size="small">
-        导入CSV文件
-        <input
-          type="file"
-          ref="refFile"
-          style="opacity:0;position:absolute;width:100%;height:100%;top:0;left:0"
-          @change="handleAddCSV"
-        />
-      </el-button>
+      <div class="eni-flex-item">
+        <el-button class="add-item-btn" type="primary" icon="el-icon-plus" size="small">
+          导入CSV文件
+          <input
+            type="file"
+            ref="refFile"
+            style="opacity:0;position:absolute;width:100%;height:100%;top:0;left:0"
+            @change="handleAddCSV"
+          />
+        </el-button>
+        <p class="csv-prompt-txt">
+          CSV文件头必须为
+          <span style="color: red;">关键词，搜索量，点击率，出现次数</span>，其中
+          <span style="color: red;">关键词</span> 是必填
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -106,6 +142,25 @@ export default {
     },
     handleDelete(index) {
       this.array.splice(index, 1);
+    },
+    handleDeleteAll() {
+      this.$confirm("删除列表中所有关键字, 是否继续?", "删除关键词", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.array = [];
+        })
+        .catch(() => {});
+    },
+    handleCopyName(name) {
+      if (name) {
+        this.$message({
+          message: "复制成功",
+          type: "success"
+        });
+      }
     },
     handleAdd() {
       if (!this.dataTxt) return;
@@ -258,14 +313,16 @@ export default {
 
 <style lang="less" scoped>
 .menu-title {
-  color: #111;
+  color: black;
   font-size: 12px;
-  text-align: center;
+  font-weight: 700;
+}
+.menu-title-success {
+  color: #4cd964;
 }
 .draggable {
   border: 1px solid #ced4da;
   background-color: #fff;
-  margin-top: 4px;
   min-height: 1;
   overflow: auto;
 }
@@ -307,6 +364,10 @@ export default {
   }
   .or {
     margin: 20px 50px;
+  }
+  .csv-prompt-txt {
+    margin-top: 5px;
+    font-size: 12px;
   }
 }
 
