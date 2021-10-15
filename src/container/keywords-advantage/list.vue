@@ -24,13 +24,13 @@
           ></el-button>
         </el-popover>
       </div>
-      <div class="eni-flex" style="margin-top: 10px; padding: 6px 1.25rem;">
+      <div class="eni-flex" style="margin-top: 10px; padding: 6px 20px 6px 10px;">
         <p class="menu-title" style="padding-left: 2vw; width:38%">关键词</p>
         <p class="menu-title eni-flex-item eni-text-center">搜索量</p>
         <p class="menu-title eni-flex-item eni-text-center">点击率</p>
         <p class="menu-title eni-flex-item eni-text-center">出现次数</p>
         <p class="menu-title eni-flex-item eni-text-center">使用次数</p>
-        <p class="menu-title eni-w20 eni-text-center">出现位置</p>
+        <p class="menu-title eni-w12 eni-text-center">出现位置</p>
         <p class="menu-title eni-w5 eni-text-center">操作</p>
       </div>
       <draggable
@@ -51,7 +51,7 @@
           <p class="eni-padding-wrap eni-white eni-flex-item eni-text-center">{{e.click}}</p>
           <p class="eni-padding-wrap eni-white eni-flex-item eni-text-center">{{e.appear}}</p>
           <p class="eni-padding-wrap eni-white eni-flex-item eni-text-center">{{e.use}}</p>
-          <div class="eni-padding-wrap eni-flex eni-w20 eni-j-center">
+          <div class="eni-padding-wrap eni-flex eni-w12 eni-j-center">
             <p class="badge-txt badge-light" :class="{'badge-success':e.isTitleHas}">标</p>
             <p class="badge-txt badge-light" :class="{'badge-success':e.isFeatureHas}">词</p>
             <p class="badge-txt badge-light" :class="{'badge-success':e.isDescHas}">描</p>
@@ -65,7 +65,7 @@
             />
             <span
               class="fa fa-trash-o"
-              style="margin-left: 10px; color: #F56C6C;display: flex;justify-content: center; cursor: pointer;"
+              style="margin-left: 8px; color: #F56C6C;display: flex;justify-content: center; cursor: pointer;"
               @click="handleDelete(index)"
             />
           </div>
@@ -96,7 +96,7 @@
           />
         </el-button>
         <p class="csv-prompt-txt">
-          CSV文件头必须为
+          CSV文件第一行必须为
           <span style="color: red;">关键词，搜索量，点击率，出现次数</span>，其中
           <span style="color: red;">关键词</span> 是必填
         </p>
@@ -193,7 +193,9 @@ export default {
               data.pop();
             }
             let s = this._parseCSVData(data);
-            this.array = s;
+            s = this.array.concat(s);
+            // 数组去重
+            this.array = this._unique(s);
           }
         });
       };
@@ -332,7 +334,7 @@ export default {
   display: flex;
   align-items: center;
   border-top: 0.5px solid #32383e;
-  padding: 0.75rem 1.25rem;
+  padding: 12px 10px 12px 10px;
 
   .handle {
     color: white;
